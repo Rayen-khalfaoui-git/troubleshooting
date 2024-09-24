@@ -1,0 +1,13 @@
+Problem : vm ran out of storage
+cause : i failed to predict how much storage the vm acutally needs
+extra : the / partition uses LVM
+solution :
+1/ added a storage device to the virtual machine
+2/
+lsblk #to see info of storaeg devics
+pvcreate /dev/extra-physical-volume-to-add #create a physical volume
+vgs #to see the volume groups
+vgextend volume-group-name /dev/physical-volume-name #to add the physical volume to the volume group
+lvextend -l +100%FREE /dev/sda/root #to add the free space(the physical volume that we added to the volume group) to the logical volume that we need to extend
+xfs_growfs /dev/sda/root #to extend the file system of that logical volume
+df -n #to check if the volume got extended
